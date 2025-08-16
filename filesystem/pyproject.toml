@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-filesystem = "filesystem:main"
+loadept-mcp-filesystem = "loadept_mcp_filesystem:main"
 
 [build-system]
 requires = ["hatchling"]
