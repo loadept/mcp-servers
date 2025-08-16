@@ -3,6 +3,8 @@ name: Filesystem
 on:
   push:
     branches: [master]
+    paths:
+      - 'filesystem/**'
 
 jobs:
   Publish:
