@@ -23,11 +23,16 @@ jobs:
           pip install --upgrade pip
           pip install uv
 
-      - name: Publish to PyPI
+      - name: Install dependencies
         run: |
           cd filesystem
           uv venv
           . .venv/bin/activate
           uv pip install .
+
+      - name: Build and publish package
+        run: |
+          cd filesystem
+          . .venv/bin/activate
           uv build
-          uv publish --repository pypi --username __token__ --password ${{ secrets.PYPI_TOKEN }}  
+          uv publish --username __token__ --password ${{ secrets.PYPI_TOKEN }}  
