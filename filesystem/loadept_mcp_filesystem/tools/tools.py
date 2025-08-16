@@ -4,6 +4,7 @@ from os.path import join, isdir, isfile
 from mcp.types import TextContent
 import json
 
+
 @ToolRegister.register
 def list_directory(dirname: str) -> list[TextContent]:
     dir_path = join(base_path, dirname)
