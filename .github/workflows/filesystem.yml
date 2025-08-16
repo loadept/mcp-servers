@@ -22,12 +22,12 @@ jobs:
       - run: |
           pip install --upgrade pip
           pip install uv
-      
+
       - name: Publish to PyPI
         run: |
           cd filesystem
           uv venv
           . .venv/bin/activate
-          uv install .
+          uv pip install .
           uv build
           uv publish --repository pypi --username __token__ --password ${{ secrets.PYPI_TOKEN }}  
