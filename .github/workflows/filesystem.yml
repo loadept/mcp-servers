@@ -30,4 +30,4 @@ jobs:
           . .venv/bin/activate
           uv install .
           uv build
-          uv publish --repository pypi --username __token__ --password ${{ secrets.PYPI_PASSWORD }}  
+          uv publish --repository pypi --username __token__ --password ${{ secrets.PYPI_TOKEN }}  
