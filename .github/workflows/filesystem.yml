@@ -1,0 +1,33 @@
+name: Filesystem
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: git log -1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: |
+          pip install --upgrade pip
+          pip install uv
+      
+      - name: Publish to PyPI
+        run: |
+          cd filesystem
+          uv venv
+          . .venv/bin/activate
+          uv install .
+          uv build
+          uv publish --repository pypi --username __token__ --password ${{ secrets.PYPI_PASSWORD }}  
