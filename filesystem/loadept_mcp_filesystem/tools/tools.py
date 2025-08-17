@@ -24,6 +24,7 @@ def list_directory(dirname: str) -> list[TextContent]:
 
 @ToolRegister.register
 def find_results(dirname: str, keyword: str) -> list[TextContent]:
+    keyword_lower = keyword.lower()
     dir_path = join(base_path, dirname)
     if not exists(dir_path):
         return [TextContent(
@@ -32,7 +33,12 @@ def find_results(dirname: str, keyword: str) -> list[TextContent]:
         )]
 
     dir_content = listdir(dir_path)
-    results = [file for file in dir_content if file.lower().startswith(keyword.lower())]
+    results = [
+        file
+        for file in dir_content
+        if (file_lower := file.lower()).startswith(keyword_lower)
+        or keyword_lower in file_lower
+    ]
     if not results:
         return [TextContent(
             type="text",

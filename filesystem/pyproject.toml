@@ -1,9 +1,12 @@
 [project]
 name = "loadept-mcp-filesystem"
-version = "0.2.1"
+version = "0.2.3"
 description = "MCP Server for Filesystem Operations"
 readme = "README.md"
 requires-python = ">=3.13"
+authors = [{ name = "loadept" }]
+maintainers = [{ name = "loadept", email = "loadept3@gmail.com" }]
+keywords = ["filesystem", "mcp", "llm", "automation"]
 dependencies = [
     "mcp>=1.13.0",
     "pydantic>=2.11.7",
