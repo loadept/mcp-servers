@@ -1,5 +1,5 @@
 from ..utils import base_path, ToolRegister
-from os import makedirs, listdir, startfile
+from os import makedirs, listdir
 from os.path import join, isdir, exists
 from platform import system
 from subprocess import run, CalledProcessError, TimeoutExpired
@@ -89,6 +89,8 @@ def open_file(dirname: str, filename: str) -> list[TextContent]:
 
         match system():
             case "Windows":
+                from os import startfile
+
                 startfile(file_path)
                 return [TextContent(
                     type="text",
