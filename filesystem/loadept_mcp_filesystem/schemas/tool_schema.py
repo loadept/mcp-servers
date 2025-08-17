@@ -26,6 +26,14 @@ class ReadContentTool(BaseModel):
     filename: str
 
 @SchemaRegister.register(
+    name='open_file',
+    description='Tool for opening a file with the default application.'
+)
+class OpenFileTool(BaseModel):
+    dirname: str
+    filename: str
+
+@SchemaRegister.register(
     name='write_content',
     description='Tool for writing content to a file.'
 )

@@ -1,6 +1,8 @@
 from ..utils import base_path, ToolRegister
-from os import makedirs, listdir
+from os import makedirs, listdir, startfile
 from os.path import join, isdir, exists
+from platform import system
+from subprocess import run, CalledProcessError, TimeoutExpired
 from mcp.types import TextContent
 import json
 
@@ -52,7 +54,8 @@ def find_results(dirname: str, keyword: str) -> list[TextContent]:
 
 @ToolRegister.register
 def read_content(dirname: str, filename: str) -> list[TextContent]:
-    dir_content = listdir(join(base_path, dirname))
+    dir_path = join(base_path, dirname)
+    dir_content = listdir(dir_path)
     if filename not in dir_content:
         return [TextContent(
             type="text",
@@ -74,8 +77,55 @@ def read_content(dirname: str, filename: str) -> list[TextContent]:
     )]
 
 @ToolRegister.register
+def open_file(dirname: str, filename: str) -> list[TextContent]:
+    try:
+        dir_path = join(base_path, dirname)
+        file_path = join(dir_path, filename)
+        if not exists(file_path):
+            return [TextContent(
+                type="text",
+                text=f"Archivo {filename} no encontrado en {dirname}."
+            )]
+
+        match system():
+            case "Windows":
+                startfile(file_path)
+                return [TextContent(
+                    type="text",
+                    text=f"Abriendo archivo {file_path}."
+                )]
+            case "Darwin":
+                run(["open", file_path])
+                return [TextContent(
+                    type="text",
+                    text=f"Abriendo archivo {file_path}."
+                )]
+            case _:
+                run(["xdg-open", file_path])
+                return [TextContent(
+                    type="text",
+                    text=f"Abriendo archivo {file_path}."
+                )]
+    except CalledProcessError as e:
+        return [TextContent(
+            type="text",
+            text=f"Ocurrio un error al abrir el archivo: {str(e.stderr)}."
+        )]
+    except TimeoutExpired:
+        return [TextContent(
+            type="text",
+            text="El intento de abrir el archivo ha expirado."
+        )]
+    except Exception as e:
+        return [TextContent(
+            type="text",
+            text=f"Ocurrio un error inesperado: {str(e)}."
+        )]
+
+@ToolRegister.register
 def write_content(dirname: str, filename: str, content: str) -> list[TextContent]:
-    with open(join(base_path, dirname, filename), 'w') as file:
+    dir_path = join(base_path, dirname, filename)
+    with open(dir_path, 'w') as file:
         file.write(content)
 
     return [TextContent(
