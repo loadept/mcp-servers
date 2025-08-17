@@ -10,6 +10,14 @@ class ListDirectoryTool(BaseModel):
     dirname: str
 
 @SchemaRegister.register(
+    name='find_results',
+    description='Tool for finding files in a directory that match a specific pattern.'
+)
+class FindResultsTool(BaseModel):
+    dirname: str
+    keyword: str
+
+@SchemaRegister.register(
     name='read_content',
     description='Tool for reading the contents of a file.'
 )

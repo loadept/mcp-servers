@@ -1,6 +1,6 @@
 from ..utils import base_path, ToolRegister
 from os import makedirs, listdir
-from os.path import join, isdir, isfile
+from os.path import join, isdir, exists
 from mcp.types import TextContent
 import json
 
@@ -20,6 +20,28 @@ def list_directory(dirname: str) -> list[TextContent]:
     return [TextContent(
         type="text",
         text=f"Directorio {dirname} contiene:\n{json.dumps(content_info, indent=2)}"
+    )]
+
+@ToolRegister.register
+def find_results(dirname: str, keyword: str) -> list[TextContent]:
+    dir_path = join(base_path, dirname)
+    if not exists(dir_path):
+        return [TextContent(
+            type="text",
+            text=f"El directorio {dirname} no existe."
+        )]
+
+    dir_content = listdir(dir_path)
+    results = [file for file in dir_content if file.lower().startswith(keyword.lower())]
+    if not results:
+        return [TextContent(
+            type="text",
+            text=f"Archivo {keyword} no encontrado en {dirname}."
+        )]
+
+    return [TextContent(
+        type="text",
+        text=f"Resultados de busqueda en {dirname}:\n{', '.join(results)}"
     )]
 
 @ToolRegister.register
