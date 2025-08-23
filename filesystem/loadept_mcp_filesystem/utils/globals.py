@@ -2,7 +2,7 @@ from os import environ, sep
 from pathlib import Path
 from .errors import PathValidateError
 
-base_path = environ.get("BASE_PATH", "C:\\Users\\Silvia")
+base_path = environ.get('BASE_PATH', '')
 
 def path_validator(pathstring: str) -> bool:
     path = Path(pathstring)
