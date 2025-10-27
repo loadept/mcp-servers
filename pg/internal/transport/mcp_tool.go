@@ -23,7 +23,7 @@ func (m *MCPTransport) ExecuteQuery(ctx context.Context, req *mcp.CallToolReques
 	domain.QueryToolOutput,
 	error,
 ) {
-	results, err := m.queryService.ExecuteQuery(input.Query, input.Args...)
+	results, err := m.queryService.ExecuteQuery(ctx, input.Query, input.Args...)
 	if err != nil {
 		output := domain.QueryToolOutput{
 			Detail:   fmt.Sprintf("An error occurred while executing the query: %v", err.Error()),
@@ -46,7 +46,7 @@ func (m *MCPTransport) GetTableInfo(ctx context.Context, req *mcp.CallToolReques
 	domain.TableInfoOutput,
 	error,
 ) {
-	results, err := m.databaseInfoService.GetTableInfo(input.TableName)
+	results, err := m.databaseInfoService.GetTableInfo(ctx, input.TableName)
 	if err != nil {
 		output := domain.TableInfoOutput{
 			Detail:  fmt.Sprintf("An error occurred while retrieving table information: %v", err.Error()),
@@ -67,7 +67,7 @@ func (m *MCPTransport) ListTables(ctx context.Context, req *mcp.CallToolRequest,
 	domain.ListTablesOutput,
 	error,
 ) {
-	results, err := m.databaseInfoService.ListTables(input.Page, input.Schema)
+	results, err := m.databaseInfoService.ListTables(ctx, input.Page, input.Schema)
 	if err != nil {
 		output := domain.ListTablesOutput{
 			Detail:  fmt.Sprintf("An error occurred while listing tables: %v", err.Error()),

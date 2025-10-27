@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 
 	"github.com/loadept/mcp-servers/internal/domain"
@@ -14,7 +15,7 @@ func NewDatabaseInfoRepository(db *sql.DB) *DatabaseInfoRepository {
 	return &DatabaseInfoRepository{db: db}
 }
 
-func (r *DatabaseInfoRepository) GetTableInfo(tableName string) ([]domain.TableInfo, error) {
+func (r *DatabaseInfoRepository) GetTableInfo(ctx context.Context, tableName string) ([]domain.TableInfo, error) {
 	query := `SELECT
 		column_name
 		, data_type
@@ -22,7 +23,7 @@ func (r *DatabaseInfoRepository) GetTableInfo(tableName string) ([]domain.TableI
 	FROM information_schema.columns
 	WHERE table_name = $1`
 
-	rows, err := r.db.Query(query, tableName)
+	rows, err := r.db.QueryContext(ctx, query, tableName)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +51,7 @@ func (r *DatabaseInfoRepository) GetTableInfo(tableName string) ([]domain.TableI
 	return tableInfo, nil
 }
 
-func (r *DatabaseInfoRepository) ListTables(page int, schema string) ([]domain.ListTables, error) {
+func (r *DatabaseInfoRepository) ListTables(ctx context.Context, page int, schema string) ([]domain.ListTables, error) {
 	query := `SELECT
 		table_catalog
 		, table_schema
@@ -63,7 +64,7 @@ func (r *DatabaseInfoRepository) ListTables(page int, schema string) ([]domain.L
 	OFFSET $2`
 
 	offset := (page - 1) * 10
-	rows, err := r.db.Query(query, schema, offset)
+	rows, err := r.db.QueryContext(ctx, query, schema, offset)
 	if err != nil {
 		return nil, err
 	}

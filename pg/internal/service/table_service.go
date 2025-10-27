@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+
 	"github.com/loadept/mcp-servers/internal/domain"
 	"github.com/loadept/mcp-servers/internal/repository"
 )
@@ -13,10 +15,10 @@ func NewDatabaseInfoService(repo *repository.DatabaseInfoRepository) *DatabaseIn
 	return &DatabaseInfoService{repo: repo}
 }
 
-func (s *DatabaseInfoService) GetTableInfo(tableName string) ([]domain.TableInfo, error) {
-	return s.repo.GetTableInfo(tableName)
+func (s *DatabaseInfoService) GetTableInfo(ctx context.Context, tableName string) ([]domain.TableInfo, error) {
+	return s.repo.GetTableInfo(ctx, tableName)
 }
 
-func (s *DatabaseInfoService) ListTables(page int, schema string) ([]domain.ListTables, error) {
-	return s.repo.ListTables(page, schema)
+func (s *DatabaseInfoService) ListTables(ctx context.Context, page int, schema string) ([]domain.ListTables, error) {
+	return s.repo.ListTables(ctx, page, schema)
 }

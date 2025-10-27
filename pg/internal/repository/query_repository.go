@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 )
 
@@ -12,15 +13,26 @@ func NewQueryRepository(db *sql.DB) *QueryRepository {
 	return &QueryRepository{db: db}
 }
 
-func (r *QueryRepository) ExecuteQuery(query string, args ...any) ([]map[string]any, error) {
-	rows, err := r.db.Query(query, args...)
+func (r *QueryRepository) ExecuteQuery(ctx context.Context, query string, args ...any) ([]map[string]any, error) {
+	tx, err := r.db.BeginTx(ctx, &sql.TxOptions{
+		ReadOnly:  true,
+		Isolation: sql.LevelReadCommitted,
+	})
 	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	rows, err := tx.Query(query, args...)
+	if err != nil {
+		tx.Rollback()
 		return nil, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.Columns()
 	if err != nil {
+		tx.Rollback()
 		return nil, err
 	}
 
@@ -33,6 +45,7 @@ func (r *QueryRepository) ExecuteQuery(query string, args ...any) ([]map[string]
 		}
 
 		if err := rows.Scan(valuePointers...); err != nil {
+			tx.Rollback()
 			return nil, err
 		}
 
@@ -48,6 +61,10 @@ func (r *QueryRepository) ExecuteQuery(query string, args ...any) ([]map[string]
 		results = append(results, rowData)
 	}
 	if err := rows.Err(); err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+	if err := tx.Commit(); err != nil {
 		return nil, err
 	}
 
