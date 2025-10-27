@@ -23,16 +23,14 @@ func (r *QueryRepository) ExecuteQuery(ctx context.Context, query string, args .
 	}
 	defer tx.Rollback()
 
-	rows, err := tx.Query(query, args...)
+	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		tx.Rollback()
 		return nil, err
 	}
 	defer rows.Close()
 
 	columns, err := rows.Columns()
 	if err != nil {
-		tx.Rollback()
 		return nil, err
 	}
 
@@ -45,7 +43,6 @@ func (r *QueryRepository) ExecuteQuery(ctx context.Context, query string, args .
 		}
 
 		if err := rows.Scan(valuePointers...); err != nil {
-			tx.Rollback()
 			return nil, err
 		}
 
@@ -61,7 +58,6 @@ func (r *QueryRepository) ExecuteQuery(ctx context.Context, query string, args .
 		results = append(results, rowData)
 	}
 	if err := rows.Err(); err != nil {
-		tx.Rollback()
 		return nil, err
 	}
 	if err := tx.Commit(); err != nil {
