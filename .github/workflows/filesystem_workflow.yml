@@ -2,10 +2,9 @@ name: Filesystem MCP
 
 on:
   push:
-    tags:
-      - v*
+    branches: [master, main]
     paths:
-      - filesystem/**
+      - 'filesystem/**'
 
 jobs:
   Publish:
@@ -13,29 +12,31 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: git log -1
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: |
+          
+      - name: Install UV
+        run: |
           pip install --upgrade pip
           pip install uv
 
-      - name: Install dependencies
+      - name: Install dependencies and build
         run: |
           cd filesystem
           uv venv
-          . .venv/bin/activate
+          source .venv/bin/activate
           uv pip install .
+          uv build
 
-      - name: Build and publish package
+      - name: Publish to PyPI
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |
           cd filesystem
-          . .venv/bin/activate
-          uv build
+          source .venv/bin/activate
           uv publish --username __token__ --password ${{ secrets.PYPI_TOKEN }}  
