@@ -2,9 +2,16 @@ package persistence
 
 import (
 	"database/sql"
+	"log"
+	"sync"
 
 	_ "github.com/lib/pq"
 	"github.com/loadept/mcp-servers/internal/config"
+)
+
+var (
+	once     sync.Once
+	instance *postgres
 )
 
 type postgres struct {
@@ -27,18 +34,31 @@ func (s *postgres) Connect() error {
 	return nil
 }
 
-func (s *postgres) GetNow() (string, error) {
+func (s *postgres) getNow() (string, error) {
 	var now string
 
-	if err := s.db.QueryRow("SELECT TO_CHAR(TODAY) FROM systables WHERE tabid = 1").Scan(&now); err != nil {
+	if err := s.db.QueryRow("SELECT CURRENT_DATE::VARCHAR").Scan(&now); err != nil {
 		return "", err
 	}
 
 	return now, nil
 }
 
-func NewDBPostgres() *postgres {
-	return &postgres{}
+func NewDBPostgres() (*postgres, error) {
+	var err error
+	var now string
+
+	once.Do(func() {
+		postgresDB := &postgres{}
+		if err = postgresDB.Connect(); err == nil {
+			now, err = postgresDB.getNow()
+			if err == nil {
+				instance = postgresDB
+				log.Printf("Connected to PostgreSQL database, current date %s\n", now)
+			}
+		}
+	})
+	return instance, err
 }
 
 func (s *postgres) GetDB() *sql.DB {

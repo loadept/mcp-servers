@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/loadept/mcp-servers/internal/config"
 	"github.com/loadept/mcp-servers/internal/infra/persistence"
 )
@@ -12,16 +10,9 @@ func init() {
 }
 
 func main() {
-	pg := persistence.NewDBPostgres()
-
-	if err := pg.Connect(); err != nil {
-		panic(err)
-	}
-	defer pg.Close()
-
-	now, err := pg.GetNow()
+	pg, err := persistence.NewDBPostgres()
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("Connection with database success, current date %s\n", now)
+	defer pg.Close()
 }

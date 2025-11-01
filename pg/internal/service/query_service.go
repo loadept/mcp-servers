@@ -20,9 +20,5 @@ func (s *QueryService) ExecuteQuery(ctx context.Context, query string, args ...a
 		return nil, fmt.Errorf("query cannot be empty")
 	}
 
-	data, err := s.repo.ExecuteQuery(ctx, query, args...)
-	if err != nil {
-		return []map[string]any{}, err
-	}
-	return data, nil
+	return s.repo.ExecuteQuery(ctx, query, args...)
 }

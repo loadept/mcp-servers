@@ -20,24 +20,16 @@ func ToolEjm() (*mcp.Server, *mcp.Tool, mcp.ToolHandlerFor[any, any]) {
 }
 
 func main() {
-	pg := persistence.NewDBPostgres()
-
-	if err := pg.Connect(); err != nil {
+	pg, err := persistence.NewDBPostgres()
+	if err != nil {
 		panic(err)
 	}
 	defer pg.Close()
-
-	// now, err := pg.GetNow()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// log.Printf("Connection with database success, current date %s\n", now)
-
 	db := pg.GetDB()
 
 	implementation := &mcp.Implementation{
 		Name:    "PostgreSQL MCP Server",
-		Version: "0.1.0",
+		Version: "0.1.1",
 	}
 	server := mcp.NewServer(implementation, nil)
 
