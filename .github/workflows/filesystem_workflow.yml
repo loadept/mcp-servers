@@ -2,8 +2,6 @@ name: Filesystem
 
 on:
   push:
-    branches:
-      - master
     tags:
       - v*
     paths:
