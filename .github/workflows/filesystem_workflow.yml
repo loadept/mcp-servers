@@ -2,9 +2,12 @@ name: Filesystem
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+    tags:
+      - v*
     paths:
-      - 'filesystem/**'
+      - filesystem/**
 
 jobs:
   Publish:
