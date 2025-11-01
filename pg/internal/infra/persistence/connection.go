@@ -2,8 +2,10 @@ package persistence
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"sync"
+	"time"
 
 	_ "github.com/lib/pq"
 	"github.com/loadept/mcp-servers/internal/config"
@@ -20,6 +22,9 @@ type postgres struct {
 
 func (s *postgres) Connect() error {
 	pgURI := config.GetEnv("POSTGRES_URI")
+	if pgURI == "" {
+		return fmt.Errorf("POSTGRES_URI environment variable is required")
+	}
 
 	db, err := sql.Open("postgres", pgURI)
 	if err != nil {
@@ -29,6 +34,10 @@ func (s *postgres) Connect() error {
 	if err := db.Ping(); err != nil {
 		return err
 	}
+
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(5 * time.Minute)
 
 	s.db = db
 	return nil
@@ -46,14 +55,14 @@ func (s *postgres) getNow() (string, error) {
 
 func NewDBPostgres() (*postgres, error) {
 	var err error
-	var now string
 
 	once.Do(func() {
-		postgresDB := &postgres{}
-		if err = postgresDB.Connect(); err == nil {
-			now, err = postgresDB.getNow()
+		instance = &postgres{}
+		if err = instance.Connect(); err == nil {
+			var now string
+
+			now, err = instance.getNow()
 			if err == nil {
-				instance = postgresDB
 				log.Printf("Connected to PostgreSQL database, current date %s\n", now)
 			}
 		}

@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/loadept/mcp-servers/internal/config"
 	"github.com/loadept/mcp-servers/internal/di"
@@ -15,14 +17,11 @@ func init() {
 	config.LoadEnvs()
 }
 
-func ToolEjm() (*mcp.Server, *mcp.Tool, mcp.ToolHandlerFor[any, any]) {
-	return &mcp.Server{}, &mcp.Tool{}, nil
-}
-
 func main() {
 	pg, err := persistence.NewDBPostgres()
 	if err != nil {
-		panic(err)
+		fmt.Println("An error occurred while connecting to the database:", err)
+		os.Exit(1)
 	}
 	defer pg.Close()
 	db := pg.GetDB()
