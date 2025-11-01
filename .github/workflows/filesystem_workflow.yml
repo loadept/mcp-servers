@@ -1,4 +1,4 @@
-name: Filesystem
+name: Filesystem MCP
 
 on:
   push:
