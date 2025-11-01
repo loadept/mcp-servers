@@ -1,65 +1,37 @@
-# MCP File System Server
+# loadept-mcp-filesystem
 
-This MCP written in python interacts with the file system
+**Versión:** 0.3.3  
+**Lenguaje:** Python 3.13+  
+**Tipo:** Paquete Python
 
-# How to use
-First you need to make sure you have uvx the python package and environment manager.
-```sh
-uv --version
+## Descripción
+Servidor MCP para operaciones seguras del sistema de archivos.
+
+## Ejecución
+```bash
+uvx loadept-mcp-filesystem
 ```
 
-If you don't have it, download it using:
-```sh
-# On macOS and Linux.
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-```sh
-# On Windows.
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+## Variables de Entorno
+```bash
+BASE_PATH="/ruta/al/directorio/base"  # Obligatorio para seguridad
 ```
 
-Or visit the official website ofe uv at: [uv website](https://docs.astral.sh/uv/)
+## Herramientas
+- `list_directory`: Lista contenido de directorio
+- `find_results`: Busca archivos por patrón
+- `read_content`: Lee contenido de archivo
+- `write_content`: Escribe archivo
+- `open_file`: Abre archivo con aplicación predeterminada
+- `create_directory`: Crea directorio
 
-Then define the mcp Server in the different clients
-### VSCode `$env:USERPROFILE\AppData\Roaming\Code\User\mcp.json`
-```json
-{
-	"servers": {
-		"loadept-mcp-filesystem": {
-			"type": "stdio",
-			"command": "uvx",
-			"args": ["loadept-mcp-filesystem"],
-			"env": {
-				"BASE_PATH": "Path:\\To\\Base\\Dir"
-			}
-		}
-	}
-}
-```
+## Instalación
+```bash
+# Instalar UV si no lo tienes
+curl -LsSf https://astral.sh/uv/install.sh | sh  # macOS/Linux
+# o
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
 
-### Cursor AI `$env:USERPROFILE\.cursor\mcp.json`
-```json
-{
-  "mcpServers": {
-    "loadept-mcp-filesystem": {
-      "command": "uvx",
-      "args": ["loadept-mcp-filesystem"]
-    }
-  }
-}
-```
-
-### Claude Desktop `$env:USERPROFILE\AppData\Roaming\Claude\claude_desktop_config.json`
-```json
-{
-    "mcpServers": {
-        "loadept-mcp-filesystem": {
-            "command": "uvx",
-            "args": ["loadept-mcp-filesystem"],
-			"env": {
-				"BASE_PATH": "Path:\\To\\Base\\Dir"
-			}
-        }
-    }
-}
+# Ejecutar
+uvx loadept-mcp-filesystem
 ```
