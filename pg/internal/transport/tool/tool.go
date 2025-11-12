@@ -1,6 +1,6 @@
 package tool
 
-import "github.com/loadept/mcp-servers/internal/service"
+import "github.com/loadept/mcp-servers/pg/internal/service"
 
 type Tool struct {
 	GetTableInfo *GetTableInfo

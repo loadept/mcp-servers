@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/loadept/mcp-servers/internal/domain"
+	"github.com/loadept/mcp-servers/pg/internal/domain"
 )
 
 type DatabaseInfoRepository struct {

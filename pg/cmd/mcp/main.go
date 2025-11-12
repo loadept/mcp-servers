@@ -6,11 +6,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/loadept/mcp-servers/internal/config"
-	"github.com/loadept/mcp-servers/internal/di"
-	"github.com/loadept/mcp-servers/internal/infra/persistence"
-	"github.com/loadept/mcp-servers/internal/transport"
-	"github.com/loadept/mcp-servers/internal/transport/tool"
+	"github.com/loadept/mcp-servers/pg/internal/config"
+	"github.com/loadept/mcp-servers/pg/internal/di"
+	"github.com/loadept/mcp-servers/pg/internal/infra/persistence"
+	"github.com/loadept/mcp-servers/pg/internal/transport"
+	"github.com/loadept/mcp-servers/pg/internal/transport/tool"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

@@ -3,8 +3,8 @@ package di
 import (
 	"database/sql"
 
-	"github.com/loadept/mcp-servers/internal/repository"
-	"github.com/loadept/mcp-servers/internal/service"
+	"github.com/loadept/mcp-servers/pg/internal/repository"
+	"github.com/loadept/mcp-servers/pg/internal/service"
 )
 
 type Container struct {

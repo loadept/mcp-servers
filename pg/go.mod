@@ -1,4 +1,4 @@
-module github.com/loadept/mcp-servers
+module github.com/loadept/mcp-servers/pg
 
 go 1.25.3
 

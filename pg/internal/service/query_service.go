@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/loadept/mcp-servers/internal/repository"
+	"github.com/loadept/mcp-servers/pg/internal/repository"
 )
 
 type QueryService struct {

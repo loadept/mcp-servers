@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/loadept/mcp-servers/internal/domain"
-	"github.com/loadept/mcp-servers/internal/service"
+	"github.com/loadept/mcp-servers/pg/internal/domain"
+	"github.com/loadept/mcp-servers/pg/internal/service"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

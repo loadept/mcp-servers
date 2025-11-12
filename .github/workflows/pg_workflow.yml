@@ -35,8 +35,10 @@ jobs:
       - name: Package applications
         run: |
           cd pg
-          tar -czf windows-pg-mcp.tar.gz pg-mcp.exe README.md
-          tar -czf linux-pg-mcp.tar.gz pg-mcp README.md
+          mkdir windows-pg-mcp && cp pg-mcp.exe README.md windows-pg-mcp/
+          mkdir linux-pg-mcp && cp pg-mcp README.md linux-pg-mcp/
+          tar -czf windows-pg-mcp.tar.gz windows-pg-mcp
+          tar -czf linux-pg-mcp.tar.gz linux-pg-mcp
           sha256sum *.tar.gz > checksums-pg-mcp.txt
 
       - name: Create Release

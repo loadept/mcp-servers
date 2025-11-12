@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/loadept/mcp-servers/internal/config"
-	"github.com/loadept/mcp-servers/internal/infra/persistence"
+	"github.com/loadept/mcp-servers/pg/internal/config"
+	"github.com/loadept/mcp-servers/pg/internal/infra/persistence"
 )
 
 func init() {

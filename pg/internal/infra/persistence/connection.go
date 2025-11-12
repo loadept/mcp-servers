@@ -8,7 +8,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-	"github.com/loadept/mcp-servers/internal/config"
+	"github.com/loadept/mcp-servers/pg/internal/config"
 )
 
 var (

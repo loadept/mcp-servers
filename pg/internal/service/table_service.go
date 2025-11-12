@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/loadept/mcp-servers/internal/domain"
-	"github.com/loadept/mcp-servers/internal/repository"
+	"github.com/loadept/mcp-servers/pg/internal/domain"
+	"github.com/loadept/mcp-servers/pg/internal/repository"
 )
 
 type DatabaseInfoService struct {
